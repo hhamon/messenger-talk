@@ -9,13 +9,18 @@ use App\Entity\User;
 use App\Repository\UserRepository;
 use DateTimeInterface;
 use Symfony\Component\PasswordHasher\Hasher\PasswordHasherFactoryInterface;
+use Symfony\Component\PasswordHasher\PasswordHasherInterface;
 
 class RegisterUser
 {
+    private readonly PasswordHasherInterface $passwordHasher;
+
     public function __construct(
         private readonly PasswordHasherFactoryInterface $passwordHasherFactory,
         private readonly UserRepository $userRepository,
+        private readonly UserEmailVerifier $userEmailVerifier,
     ) {
+        $this->passwordHasher = $this->passwordHasherFactory->getPasswordHasher(User::class);
     }
 
     public function registerUser(
@@ -26,8 +31,6 @@ class RegisterUser
         ?string $country = null,
         DateTimeInterface|string|null $birthdate = null,
     ): User {
-        $passwordHasher = $this->passwordHasherFactory->getPasswordHasher(User::class);
-
         if ($birthdate instanceof DateTimeInterface) {
             $birthdate = $birthdate->format('Y-m-d');
         }
@@ -38,7 +41,7 @@ class RegisterUser
 
         $user = User::register(
             $email,
-            $passwordHasher->hash($password),
+            $this->passwordHasher->hash($password),
             $gender,
             $fullName,
             $country,
@@ -46,6 +49,8 @@ class RegisterUser
         );
 
         $this->userRepository->save($user);
+
+        $this->userEmailVerifier->sendEmailConfirmation($user);
 
         return $user;
     }
