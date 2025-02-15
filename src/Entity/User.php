@@ -46,6 +46,25 @@ class User
     #[ORM\Column(type: Types::DATETIME_IMMUTABLE)]
     private DateTimeImmutable $createdAt;
 
+    public static function register(
+        string $email,
+        string $password,
+        string $gender,
+        string $fullName,
+        ?string $country = null,
+        ?string $birthdate = null,
+    ): self {
+        return new self(
+            Uuid::v7(),
+            $email,
+            $password,
+            Gender::from($gender),
+            $fullName,
+            $country,
+            $birthdate ? new DateTimeImmutable($birthdate) : null,
+        );
+    }
+
     public function __construct(
         Uuid $id,
         string $email,
