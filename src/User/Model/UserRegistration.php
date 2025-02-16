@@ -50,7 +50,7 @@ final class UserRegistration
 
     public function setEmail(?string $email): void
     {
-        $this->email = $email;
+        $this->email = mb_strtolower($email);
     }
 
     public function getPassword(): string

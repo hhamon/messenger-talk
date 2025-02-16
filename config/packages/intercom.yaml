@@ -1,0 +1,6 @@
+framework:
+  http_client:
+    scoped_clients:
+      # only requests matching scope will use these options
+      intercom.client:
+        scope: 'https://api\.intercom\.io'

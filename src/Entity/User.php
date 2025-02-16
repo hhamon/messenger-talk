@@ -39,6 +39,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $country = null;
 
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $intercomId = null;
+
     #[ORM\Column(type: Types::DATE_IMMUTABLE, nullable: true)]
     private ?DateTimeImmutable $birthdate = null;
 
@@ -77,7 +80,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         ?DateTimeInterface $birthdate = null,
     ) {
         $this->id = $id;
-        $this->email = $email;
+        $this->email = mb_strtolower($email);
         $this->password = $password;
         $this->gender = $gender;
         $this->fullName = $fullName;
@@ -148,12 +151,27 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function setBirthdate(?DateTimeInterface $birthdate): void
     {
-        $this->birthdate = $birthdate;
+        $this->birthdate = DateTimeImmutable::createFromInterface($birthdate);
     }
 
-    public function getCreatedAt(): DateTimeImmutable
+    public function getIntercomId(): ?string
+    {
+        return $this->intercomId;
+    }
+
+    public function setIntercomId(?string $intercomId): void
+    {
+        $this->intercomId = $intercomId;
+    }
+
+    public function getCreatedAt(): DateTimeInterface
     {
         return $this->createdAt;
+    }
+
+    public function getEmailVerifiedAt(): ?DateTimeInterface
+    {
+        return $this->emailVerifiedAt;
     }
 
     public function verify(?DateTimeImmutable $emailVerifiedAt = null): void

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\Intercom\IntercomClient;
 use App\Repository\UserRepository;
 use App\User\UserEmailVerifier;
 use DomainException;
@@ -22,6 +23,7 @@ final class VerifyUserEmailController extends AbstractController
         private readonly UserEmailVerifier $userEmailVerifier,
         private readonly UserRepository $userRepository,
         private readonly TranslatorInterface $translator,
+        private readonly IntercomClient $intercomClient,
     ) {
     }
 
@@ -49,6 +51,10 @@ final class VerifyUserEmailController extends AbstractController
         }
 
         $this->addFlash('success', 'Your email address has been verified.');
+
+        if ((string) $user->getIntercomId() !== '') {
+            $this->intercomClient->updateUser($user);
+        }
 
         if ($this->isGranted('ROLE_USER')) {
             return $this->redirectToRoute('app_show_user_profile');
