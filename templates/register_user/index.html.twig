@@ -1,0 +1,34 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Signup{% endblock %}
+
+{% block body %}
+<style>
+    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
+    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
+    fieldset { margin-bottom: 30px }
+    fieldset legend { padding: 0 10px; font-weight: bold }
+    fieldset > div { margin: 20px }
+    fieldset label { margin-right: 20px }
+</style>
+
+<div class="example-wrapper">
+    <h1>Signup</h1>
+    {{ form_start(form, {attr: {novalidate: 'novalidate'}}) }}
+        {{ form_errors(form) }}
+        <fieldset>
+            <legend>Personal Information</legend>
+            {{ form_row(form.gender) }}
+            {{ form_row(form.fullName) }}
+            {{ form_row(form.birthdate) }}
+            {{ form_row(form.country) }}
+        </fieldset>
+        <fieldset>
+            <legend>Account</legend>
+            {{ form_row(form.email) }}
+            {{ form_row(form.password) }}
+            {{ form_rest(form) }}
+        </fieldset>
+    {{ form_end(form) }}
+</div>
+{% endblock %}

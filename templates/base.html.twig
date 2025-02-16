@@ -11,6 +11,15 @@
         {% endblock %}
     </head>
     <body>
+        <ul>
+            <li><a href="">Homepage</a></li>
+            {% if not is_granted('ROLE_USER') %}
+                <li><a href="{{ path('app_register_user') }}">Signup</a></li>
+                <li><a href="{{ path('app_login') }}">Login</a></li>
+            {% else %}
+                <li><a href="{{ path('app_logout') }}">Logout</a></li>
+            {% endif %}
+        </ul>
         {% block body %}{% endblock %}
     </body>
 </html>
