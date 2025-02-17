@@ -186,6 +186,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function getRoles(): array
     {
+        if ($this->email === 'hhamon@example.com') {
+            return ['ROLE_ADMIN'];
+        }
+
         return ['ROLE_USER'];
     }
 
