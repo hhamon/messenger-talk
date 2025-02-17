@@ -7,7 +7,7 @@ namespace App\Intercom\Message;
 use Symfony\Component\Messenger\Attribute\AsMessage;
 use Symfony\Component\Uid\Uuid;
 
-#[AsMessage]
+#[AsMessage('async')]
 final readonly class SyncIntercomUserContactMessage
 {
     public function __construct(

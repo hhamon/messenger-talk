@@ -7,7 +7,7 @@ namespace App\User\Message;
 use Symfony\Component\Messenger\Attribute\AsMessage;
 use Symfony\Component\Uid\Uuid;
 
-#[AsMessage]
+#[AsMessage('async')]
 final readonly class SendWelcomeEmailMessage
 {
     public function __construct(
