@@ -6,8 +6,11 @@ namespace App\User\Message;
 
 use Symfony\Component\Messenger\Attribute\AsMessage;
 use Symfony\Component\Uid\Uuid;
+use Zenstruck\Messenger\Monitor\Stamp\TagStamp;
 
 #[AsMessage('async')]
+#[TagStamp('notification')]
+#[TagStamp('notification.email')]
 final readonly class SendWelcomeEmailMessage
 {
     public function __construct(

@@ -9,10 +9,13 @@ use App\User\Form\UserRegistrationType;
 use App\User\Message\SendWelcomeEmailMessage;
 use App\User\Model\UserRegistration;
 use App\User\RegisterUser;
+use DateInterval;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\MessageBusInterface;
+use Symfony\Component\Messenger\Stamp\DelayStamp;
 use Symfony\Component\Routing\Attribute\Route;
 
 final class RegisterUserController extends AbstractController
@@ -43,7 +46,20 @@ final class RegisterUserController extends AbstractController
             );
 
             $this->messageBus->dispatch(new SendWelcomeEmailMessage((string) $user->getId()));
-            $this->messageBus->dispatch(new SyncIntercomUserContactMessage((string) $user->getId()));
+
+            $message = new SyncIntercomUserContactMessage((string) $user->getId());
+
+            $this->messageBus->dispatch($message, [
+                DelayStamp::delayFor(new DateInterval('PT20S')),
+            ]);
+
+            /*
+            $this->messageBus->dispatch(
+                new Envelope($message)->with(
+                    DelayStamp::delayFor(new DateInterval('PT20S')),
+                ),
+            );
+            */
 
             return $this->redirectToRoute('app_confirm_user_registration');
         }

@@ -6,8 +6,11 @@ namespace App\Intercom\Message;
 
 use Symfony\Component\Messenger\Attribute\AsMessage;
 use Symfony\Component\Uid\Uuid;
+use Zenstruck\Messenger\Monitor\Stamp\TagStamp;
 
 #[AsMessage('async')]
+#[TagStamp('marketing')]
+#[TagStamp('intercom')]
 final readonly class SyncIntercomUserContactMessage
 {
     public function __construct(
