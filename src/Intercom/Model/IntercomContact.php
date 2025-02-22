@@ -4,17 +4,26 @@ declare(strict_types=1);
 
 namespace App\Intercom\Model;
 
-use Assert\Assertion;
-use stdClass;
-
 final readonly class IntercomContact
 {
-    public static function fromStdClass(stdClass $object): self
+    /**
+     * @param array{
+     *   type: string,
+     *   id: string,
+     *   workspace_id: string,
+     *   external_id: string,
+     *   role: string,
+     *   email: string,
+     *   phone: string|null,
+     *   name: string,
+     *   created_at: int,
+     *   updated_at: int,
+     *   signed_up_at: int,
+     * } $object
+     */
+    public static function fromArray(array $object): self
     {
-        Assertion::propertyExists($object, 'id');
-        Assertion::string($object->id);
-
-        return new self($object->id);
+        return new self($object['id']);
     }
 
     public function __construct(

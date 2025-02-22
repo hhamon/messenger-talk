@@ -3,18 +3,21 @@ framework:
         # Uncomment this (and the failed transport below) to send failed messages to this transport for later handling.
         # failure_transport: failed
 
-        default_bus: command.bus
+        default_bus: messenger.bus.default
 
         buses:
-            command.bus:
+            messenger.bus.default:
                 middleware:
                     - validation
-                    - doctrine_close_connection
-                    - doctrine_open_transaction_logger
+                    - dispatch_after_current_bus
                     - doctrine_transaction
 
-            event.bus:
-                default_middleware: allow_no_handlers
+#            event.bus:
+#                default_middleware: allow_no_handlers
+#                middleware:
+#                    - validation
+#                    - dispatch_after_current_bus
+#                    - doctrine_transaction
 
         transports:
             # https://symfony.com/doc/current/messenger.html#transport-configuration

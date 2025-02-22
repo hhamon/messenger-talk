@@ -39,7 +39,7 @@ final class IntercomProxyClient implements IntercomClient
     {
         $contact = $this->intercomContacts->create($this->getUserContactPayload($user));
 
-        return IntercomContact::fromStdClass($contact);
+        return IntercomContact::fromArray((array) $contact);
     }
 
     public function updateUser(User $user): IntercomContact
@@ -52,7 +52,7 @@ final class IntercomProxyClient implements IntercomClient
 
         $contact = $this->intercomContacts->update($intercomId, $this->getUserContactPayload($user));
 
-        return IntercomContact::fromStdClass($contact);
+        return IntercomContact::fromArray((array) $contact);
     }
 
     private function getUserContactPayload(User $user): array
