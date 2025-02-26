@@ -8,7 +8,7 @@ use Symfony\Component\Messenger\Attribute\AsMessage;
 use Symfony\Component\Uid\Uuid;
 use Zenstruck\Messenger\Monitor\Stamp\TagStamp;
 
-#[AsMessage('async')]
+#[AsMessage('async_priority_low')]
 #[TagStamp('marketing')]
 #[TagStamp('intercom')]
 final readonly class SyncIntercomUserContactMessage
