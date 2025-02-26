@@ -41,6 +41,6 @@ when@test:
             transports:
                 # replace with your transport name here (e.g., my_transport: 'in-memory://')
                 # For more Messenger testing tools, see https://github.com/zenstruck/messenger-test
-                async: 'in-memory://'
-                async_priority_high: 'in-memory://'
-                async_priority_low: 'in-memory://'
+                async: 'test://'
+                async_priority_high: 'test://'
+                async_priority_low: 'test://'

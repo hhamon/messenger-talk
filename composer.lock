@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "9c70593a85d9e006bb7d1e7dcb81b010",
+    "content-hash": "ec8f56c82e5582392b5ee7295cc0491c",
     "packages": [
         {
             "name": "asmblah/php-amqp-compat",

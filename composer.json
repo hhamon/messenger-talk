@@ -130,7 +130,7 @@
         "zenstruck/browser": "^1.9",
         "zenstruck/console-test": "^1.7",
         "zenstruck/foundry": "^2.3.4",
-        "zenstruck/mailer-test": "^1.4.2",
+        "zenstruck/mailer-test": "^1.4",
         "zenstruck/messenger-monitor-bundle": "^0.5.1",
         "zenstruck/messenger-test": "^1.11"
     }
