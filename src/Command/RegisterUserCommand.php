@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Command;
 
-use App\User\RegisterUser;
+use App\User\Message\Command\RegisterUser;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -12,6 +12,10 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
+use Symfony\Component\Messenger\Exception\ValidationFailedException;
+use Symfony\Component\Messenger\MessageBusInterface;
+use Symfony\Component\Uid\Uuid;
+use Symfony\Component\Validator\ConstraintViolation;
 
 #[AsCommand(
     name: 'app:register-user',
@@ -20,7 +24,7 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 final class RegisterUserCommand extends Command
 {
     public function __construct(
-        private readonly RegisterUser $registerUser,
+        private readonly MessageBusInterface $commandBus,
     ) {
         parent::__construct();
     }
@@ -58,16 +62,31 @@ final class RegisterUserCommand extends Command
         /** @var string $plainPassword */
         $plainPassword = $io->askHidden('Password:');
 
-        $user = $this->registerUser->registerUser(
-            $email,
-            $plainPassword,
-            $gender,
-            $fullName,
-            $country,
-            $birthdate,
+        $id = Uuid::v7();
+
+        $command = new RegisterUser(
+            id: (string) $id,
+            email: mb_strtolower($email),
+            gender: $gender,
+            fullName: $fullName,
+            password: $plainPassword,
+            country: $country,
+            birthdate: $birthdate,
         );
 
-        $io->success(\sprintf('User %s was registered.', $user->getId()));
+        try {
+            $this->commandBus->dispatch($command);
+        } catch (ValidationFailedException $e) {
+            $io->warning('Validation failed.');
+            $io->listing(\array_map(
+                static fn (ConstraintViolation $violation): string => \sprintf('%s: %s', $violation->getPropertyPath(), $violation->getMessage()),
+                \iterator_to_array($e->getViolations()),
+            ));
+
+            return self::FAILURE;
+        }
+
+        $io->success(\sprintf('User %s was registered.', $id));
 
         return Command::SUCCESS;
     }

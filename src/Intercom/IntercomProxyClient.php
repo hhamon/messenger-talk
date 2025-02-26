@@ -10,6 +10,7 @@ use Intercom\IntercomClient as IntercomSdkClient;
 use Intercom\IntercomContacts;
 use RuntimeException;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
+use Symfony\Component\DependencyInjection\Attribute\When;
 use Symfony\Component\HttpClient\Psr18Client;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
@@ -20,6 +21,8 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
     ],
     constructor: 'create',
 )]
+#[When('dev')]
+#[When('prod')]
 final class IntercomProxyClient implements IntercomClient
 {
     public static function create(string $intercomAuthToken, HttpClientInterface $intercomClient): self
@@ -39,7 +42,7 @@ final class IntercomProxyClient implements IntercomClient
     {
         $contact = $this->intercomContacts->create($this->getUserContactPayload($user));
 
-        return IntercomContact::fromStdClass($contact);
+        return IntercomContact::fromArray((array) $contact);
     }
 
     public function updateUser(User $user): IntercomContact
@@ -52,7 +55,7 @@ final class IntercomProxyClient implements IntercomClient
 
         $contact = $this->intercomContacts->update($intercomId, $this->getUserContactPayload($user));
 
-        return IntercomContact::fromStdClass($contact);
+        return IntercomContact::fromArray((array) $contact);
     }
 
     private function getUserContactPayload(User $user): array

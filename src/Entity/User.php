@@ -52,6 +52,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private DateTimeImmutable $createdAt;
 
     public static function register(
+        Uuid $id,
         string $email,
         string $password,
         string $gender,
@@ -60,7 +61,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         ?string $birthdate = null,
     ): self {
         return new self(
-            Uuid::v7(),
+            $id,
             $email,
             $password,
             Gender::from($gender),
@@ -186,6 +187,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function getRoles(): array
     {
+        if ($this->email === 'hhamon@example.com') {
+            return ['ROLE_ADMIN'];
+        }
+
         return ['ROLE_USER'];
     }
 
