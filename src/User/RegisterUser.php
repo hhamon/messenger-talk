@@ -10,6 +10,7 @@ use App\Repository\UserRepository;
 use DateTimeInterface;
 use Symfony\Component\PasswordHasher\Hasher\PasswordHasherFactoryInterface;
 use Symfony\Component\PasswordHasher\PasswordHasherInterface;
+use Symfony\Component\Uid\Uuid;
 
 class RegisterUser
 {
@@ -39,6 +40,7 @@ class RegisterUser
         }
 
         $user = User::register(
+            Uuid::v7(),
             $email,
             $this->passwordHasher->hash($password),
             $gender,

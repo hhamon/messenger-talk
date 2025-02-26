@@ -58,7 +58,6 @@
         "twig/twig": "^3.20.0",
         "zenstruck/collection": "^0.5.0",
         "zenstruck/console-extra": "^1.4",
-        "zenstruck/messenger-test": "^1.11",
         "zenstruck/schedule-bundle": "^1.8"
     },
     "config": {
@@ -108,11 +107,12 @@
     },
     "extra": {
         "symfony": {
-            "allow-contrib": false,
+            "allow-contrib": true,
             "require": "7.2.*"
         }
     },
     "require-dev": {
+        "dama/doctrine-test-bundle": "^8.2",
         "phpstan/extension-installer": "^1.4.3",
         "phpstan/phpstan": "^2.1.5",
         "phpstan/phpstan-doctrine": "^2.0.1",
@@ -127,10 +127,11 @@
         "symfony/web-profiler-bundle": "7.2.*",
         "symplify/easy-coding-standard": ">=12.5.5",
         "zenstruck/assert": "^1.5.1",
-        "zenstruck/browser": "^1.9.1",
+        "zenstruck/browser": "^1.9",
         "zenstruck/console-test": "^1.7",
         "zenstruck/foundry": "^2.3.4",
         "zenstruck/mailer-test": "^1.4.2",
-        "zenstruck/messenger-monitor-bundle": "^0.5.1"
+        "zenstruck/messenger-monitor-bundle": "^0.5.1",
+        "zenstruck/messenger-test": "^1.11"
     }
 }
